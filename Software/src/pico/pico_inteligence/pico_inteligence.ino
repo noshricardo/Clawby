@@ -11,6 +11,10 @@ int m1b = 2;
 int m2f = 3;
 int m2b = 4;
 
+int dist1;
+int dist2;
+int dist3;
+
 void setup(){
   pinMode(m1f, OUTPUT);
   pinMode(m1b, OUTPUT);
@@ -18,7 +22,19 @@ void setup(){
   pinMode(m2b, OUTPUT);
 }
 
+void setup1(){
+  
+}
 
+void loop1(){
+  //do input from sonar
+  dist1 = 0;
+  dist2 = 5;
+  dist3 = 4;
+  input(0) = float(dist1);
+  input(1) = float(dist2);
+  input(2) = float(dist3);
+}
 
 void loop(){
   BLA::Matrix<2> tmp = layer1 * input;
