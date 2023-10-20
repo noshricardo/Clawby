@@ -1,2 +1,2 @@
 # Clawby
-[ ] - ToDo - write README
+- [ ] ToDo - write README
