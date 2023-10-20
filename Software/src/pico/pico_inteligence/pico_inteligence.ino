@@ -57,7 +57,7 @@ void loop1(){
 }
 
 void loop(){
-  tmp = (layer1 * input) + outputBias;
+  tmp = (layer1 * (input + inputBias)) + outputBias;
   for(int i = 0; i < 2; i++){
     output(i) = (1/(1 + exp(-(tmp(i)))));
   }
