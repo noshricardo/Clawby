@@ -1,5 +1,6 @@
 #include <BasicLinearAlgebra.h>
 #include "Weights/Weights.h"
+#include "Weights/neurons.h"
 
 using namespace BLA;
 
@@ -16,7 +17,6 @@ int dist1;
 int dist2;
 int dist3;
 
-float bias = -1;
 
 void setup(){
   pinMode(m1f, OUTPUT);
@@ -31,27 +31,22 @@ void setup1(){
 }
 
 void loop1(){
+  //simulate sonar input from serial inputs
   Serial.read();
   delay(2);
+  
   Serial.print("input left sonar sensor dist: ");
-  //delay(1);
   dist1 = Serial.parseInt();
   Serial.println(dist1);
-  //delay(1);
+  
   Serial.print("input middle sonar sensor dist: ");
-  //delay(1);
   dist2 = Serial.parseInt();
   Serial.println(dist2);
-  //delay(1);
+  
   Serial.print("input right sonar sensor dist: ");
-  //delay(1);
   dist3 = Serial.parseInt();
   Serial.println(dist3);
-  //delay(1);
-  //do input from sonar
-  //dist1 = 0;
-  //dist2 = 5;
-  //dist3 = 4;
+
   input(0) = float(dist1);
   input(1) = float(dist2);
   input(2) = float(dist3);
@@ -62,10 +57,9 @@ void loop1(){
 }
 
 void loop(){
-  //BLA::Matrix<2> tmp = layer1 * input;
-  tmp = layer1 * input;
+  tmp = (layer1 * input) + outputBias;
   for(int i = 0; i < 2; i++){
-    output(i) = (1/(1 + exp(-(tmp(i)+bias))));
+    output(i) = (1/(1 + exp(-(tmp(i)))));
   }
   if(output(1) < 0.5){
     digitalWrite(m1f, LOW);
