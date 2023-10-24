@@ -22,6 +22,9 @@ public class Bot {
     
     Geometry geom;
     float scale = 4;
+    float dist1 = 0;
+    float dist2 = 0;
+    float dist3 = 0;
     
     
     public Bot(Node rootNode, AssetManager assetManager){
@@ -40,16 +43,19 @@ public class Bot {
     }
     
     public void castRays(Node rootNode){
-        Ray ray = new Ray(this.getLocation(), new Vector3f(1,1,1));
+        Ray ray1 = new Ray(this.getLocation(), new Vector3f(1,1,1));
+        Ray ray2 = new Ray(this.getLocation(), new Vector3f(1,1,1));
+        Ray ray3 = new Ray(this.getLocation(), new Vector3f(1,1,1));
         //Geometry r = new Geometry();
-        CollisionResults results = new CollisionResults();
-        rootNode.collideWith(ray, results);
-        String targetName = new String();
-        try{
-            targetName = results.getClosestCollision().getGeometry().getName();
-        }catch(Exception e){
-            
-        }
+        CollisionResults results1 = new CollisionResults();
+        CollisionResults results2 = new CollisionResults();
+        CollisionResults results3 = new CollisionResults();
+        rootNode.collideWith(ray1, results1);
+        rootNode.collideWith(ray2, results2);
+        rootNode.collideWith(ray3, results3);
+        dist1 = results1.getClosestCollision().getDistance();
+        dist2 = results2.getClosestCollision().getDistance();
+        dist3 = results3.getClosestCollision().getDistance();
     }
     
 }
