@@ -43,6 +43,11 @@ public class Bot {
         castRays(rootNode);
     }
     
+    public void update(float tpf){
+        
+    }
+    
+    
     
     public Vector3f getLocation(){
         return geom.getLocalTranslation();
@@ -86,15 +91,18 @@ public class Bot {
         
         if(results1 != null){
             dist1 = results1.getCollision(2).getDistance();
+            System.out.println("dist1: " + dist1);
             //results1.getCollision(2).getGeometry().setMaterial(mat);
             //System.out.println(results1.getCollision(2).getGeometry().getName());
         }
         if(results2 != null){
             dist2 = results2.getCollision(1).getDistance();
+            System.out.println("dist2: " + dist2);
             //results2.getCollision(1).getGeometry().setMaterial(mat);
         }
         if(results3 != null){
             dist3 = results3.getCollision(1).getDistance();
+            System.out.println("dist3: " + dist3);
             //results3.getCollision(1).getGeometry().setMaterial(mat);
         }
         

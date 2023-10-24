@@ -44,6 +44,7 @@ dependencies {
   implementation "org.jmonkeyengine:jme3-plugins:$jmeVer"
 
   // Additional Libraries
+  implementation group: 'org.ejml', name: 'ejml-all', version: '0.43'
 
   // Assets sub-project
   runtimeOnly project(':assets')
