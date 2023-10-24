@@ -1,6 +1,7 @@
 package com.nosh.PicoTrainer;
 
 import BotSystem.Bot;
+import BotSystem.Brain;
 import com.jme3.app.SimpleApplication;
 import com.jme3.material.Material;
 import com.jme3.math.ColorRGBA;
@@ -25,6 +26,10 @@ public class Main extends SimpleApplication {
 
     @Override
     public void simpleInitApp() {
+        Brain brain = new Brain();
+        brain.readParams();
+        
+        
         this.cam.setFrustumFar(100000);
         Maze maze = new Maze(MazeGenerator.genRandomMaze(new MazeStorage(), 100, 100));
         maze.drawMaze(assetManager, rootNode);

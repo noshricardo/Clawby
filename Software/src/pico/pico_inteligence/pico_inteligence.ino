@@ -58,7 +58,7 @@ void loop1(){
 
 
 void loop(){
-  BLA::Matrix<16> tmp = (layer1 * (input + inputBias)) + layer1Bias;
+  BLA::Matrix<16> tmp = (layer1 * (input)) + layer1Bias;
   int x = 16;
   for(int i = 0; i < x; i++){
     tmp(i) = (1/(1 + exp(-(tmp(i)))));
