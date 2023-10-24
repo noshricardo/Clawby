@@ -36,11 +36,46 @@ public class Brain {
        
    }
    
+   public float[] computeMotionL4O(float distLeft, float distMiddle, float distRight){
+       float[] out = {0,0};
+       float a[][] = {{distLeft,distMiddle,distRight}};
+       float e = (float)exp(1.0);
+       System.out.println("e = " + e);
+       FMatrixRMaj in = new FMatrixRMaj(a);
+       
+       FMatrixRMaj tmp = layer4Bias.createLike();
+       CommonOps_FDRM.mult(in, layer4, tmp);
+       System.out.println(tmp);
+       CommonOps_FDRM.add(1.0f, layer4Bias,1.0f, tmp, tmp);
+       System.out.println(tmp);
+       CommonOps_FDRM.scale(-1.0f, tmp);
+       System.out.println(tmp);
+       CommonOps_FDRM.elementPower(e, tmp, tmp);
+       System.out.println(tmp);
+       CommonOps_FDRM.add(tmp, 1.0f);
+       System.out.println(tmp);
+       CommonOps_FDRM.divide(1.0f, tmp);
+       System.out.println(tmp);
+       
+       out = tmp.data;
+       
+       return out;
+   }
+   
+   
+   
    public float[] computeMotion(float distLeft, float distMiddle, float distRight){
        float[] out = {0,0};
        float a[][] = {{distLeft,distMiddle,distRight}};
        float e = (float)exp(1.0);
+       System.out.println("e = " + e);
        FMatrixRMaj in = new FMatrixRMaj(a);
+       /*
+       CommonOps_FDRM.scale(-1.0f, in);
+       CommonOps_FDRM.elementPower(e, in, in);
+       CommonOps_FDRM.add(in, 1.0f);
+       CommonOps_FDRM.divide(1.0f, in);
+       */
        //System.out.println(in);
        //System.out.println(layer1);
        //System.out.println(layer1Bias);
@@ -49,7 +84,7 @@ public class Brain {
        CommonOps_FDRM.add(1.0f, layer1Bias,1.0f, tmp, tmp);
        CommonOps_FDRM.scale(-1.0f, tmp);
        CommonOps_FDRM.elementPower(e, tmp, tmp);
-       CommonOps_FDRM.add(tmp, 1.0f, tmp);
+       CommonOps_FDRM.add(tmp, 1.0f);
        CommonOps_FDRM.divide(1.0f, tmp);
        
        FMatrixRMaj tmp2 = layer2Bias.createLike();
@@ -57,7 +92,7 @@ public class Brain {
        CommonOps_FDRM.add(1.0f, layer2Bias,1.0f, tmp2, tmp2);
        CommonOps_FDRM.scale(-1.0f, tmp2);
        CommonOps_FDRM.elementPower(e, tmp2, tmp2);
-       CommonOps_FDRM.add(tmp2, 1.0f, tmp2);
+       CommonOps_FDRM.add(tmp2, 1.0f);
        CommonOps_FDRM.divide(1.0f, tmp2);
        
        FMatrixRMaj tmp3 = layer3Bias.createLike();
@@ -65,17 +100,17 @@ public class Brain {
        CommonOps_FDRM.add(1.0f, layer3Bias,1.0f, tmp3, tmp3);
        CommonOps_FDRM.scale(-1.0f, tmp3);
        CommonOps_FDRM.elementPower(e, tmp3, tmp3);
-       CommonOps_FDRM.add(tmp3, 1.0f, tmp3);
+       CommonOps_FDRM.add(tmp3, 1.0f);
        CommonOps_FDRM.divide(1.0f, tmp3);
        
        FMatrixRMaj tmp4 = layer4Bias.createLike();
-       System.out.println(tmp3);
-       System.out.println(layer4);
+       //System.out.println(tmp3);
+       //System.out.println(layer4);
        CommonOps_FDRM.mult(tmp3, layer4, tmp4);
        CommonOps_FDRM.add(1.0f, layer4Bias,1.0f, tmp4, tmp4);
        CommonOps_FDRM.scale(-1.0f, tmp4);
        CommonOps_FDRM.elementPower(e, tmp4, tmp4);
-       CommonOps_FDRM.add(tmp4, 1.0f, tmp4);
+       CommonOps_FDRM.add(tmp4, 1.0f);
        CommonOps_FDRM.divide(1.0f, tmp4);
        
        out = tmp4.data;
@@ -83,7 +118,48 @@ public class Brain {
        return out;
    }
    
-   
+   public void setRandomParams(){
+       for(int i = 0; i < layer1.numCols; i++){
+           for(int j = 0; j < layer1.numRows; j++){
+               layer1.set(j, i, (float)Math.random());
+           } 
+       }
+       for(int i = 0; i < layer2.numCols; i++){
+           for(int j = 0; j < layer2.numRows; j++){
+               layer2.set(j, i, (float)Math.random());
+           } 
+       }
+       for(int i = 0; i < layer3.numCols; i++){
+           for(int j = 0; j < layer3.numRows; j++){
+               layer3.set(j, i, (float)Math.random());
+           } 
+       }
+       for(int i = 0; i < layer4.numCols; i++){
+           for(int j = 0; j < layer4.numRows; j++){
+               layer4.set(j, i, (float)Math.random());
+           } 
+       }
+       for(int i = 0; i < layer1Bias.numCols; i++){
+           for(int j = 0; j < layer1Bias.numRows; j++){
+               layer1Bias.set(j, i, (float)Math.random());
+           } 
+       }
+       for(int i = 0; i < layer2Bias.numCols; i++){
+           for(int j = 0; j < layer2Bias.numRows; j++){
+               layer2Bias.set(j, i, (float)Math.random());
+           } 
+       }
+       for(int i = 0; i < layer3Bias.numCols; i++){
+           for(int j = 0; j < layer3Bias.numRows; j++){
+               layer3Bias.set(j, i, (float)Math.random());
+           } 
+       }
+       for(int i = 0; i < layer4Bias.numCols; i++){
+           for(int j = 0; j < layer4Bias.numRows; j++){
+               layer4Bias.set(j, i, (float)Math.random());
+           } 
+       }
+   }
    
    public void readParams(){
        String everything = "";

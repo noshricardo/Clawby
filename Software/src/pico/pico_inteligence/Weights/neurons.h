@@ -11,5 +11,5 @@ BLA::Matrix<3> layer3Bias = {
 };
 
 BLA::Matrix<2> layer4Bias = {
-    -1,-1
+    0,0
 };

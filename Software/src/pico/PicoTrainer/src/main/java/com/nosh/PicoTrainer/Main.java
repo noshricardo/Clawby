@@ -19,6 +19,9 @@ import com.nosh.PicoTrainer.MazeSystem.MazeStorage;
  */
 public class Main extends SimpleApplication {
 
+    Bot bot;
+    
+    
     public static void main(String[] args) {
         Main app = new Main();
         app.start();
@@ -26,20 +29,21 @@ public class Main extends SimpleApplication {
 
     @Override
     public void simpleInitApp() {
-        Brain brain = new Brain();
-        brain.readParams();
-        brain.computeMotion(1, 1, 1);
+        //Brain brain = new Brain();
+        //brain.readParams();
+        //brain.computeMotion(1, 1, 1);
         
         
         this.cam.setFrustumFar(100000);
         Maze maze = new Maze(MazeGenerator.genRandomMaze(new MazeStorage(), 100, 100));
         maze.drawMaze(assetManager, rootNode);
-        Bot bot = new Bot(rootNode, assetManager);
+        bot = new Bot(rootNode, assetManager);
         flyCam.setMoveSpeed(100);
     }
 
     @Override
     public void simpleUpdate(float tpf) {
+        bot.update(tpf);
         //TODO: add update code
     }
 

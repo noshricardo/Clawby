@@ -28,6 +28,9 @@ public class Bot {
     float dist1 = 0;
     float dist2 = 0;
     float dist3 = 0;
+    Node rootNode;
+    Brain brain;
+    float[] targetDir = {0,0};
     
     
     public Bot(Node rootNode, AssetManager assetManager){
@@ -37,48 +40,64 @@ public class Bot {
         mat.setColor("Color", ColorRGBA.Red);
         //geom.setLocalTranslation((pos[0]*2f*scale)-1000,5,(pos[1]*2f*scale)-1000);
         geom.setMaterial(mat);
-        geom.getLocalRotation();
         geom.setLocalTranslation(-150*8, 0, 4);
-        rootNode.attachChild(geom);
-        castRays(rootNode);
+        this.rootNode = rootNode;
+        rootNode.attachChild(geom);        
+        //castRays(rootNode);
+        
+        brain = new Brain();
+        brain.readParams();
+        //brain.setRandomParams();
+        
+        targetDir = brain.computeMotionL4O(12,10, 5);
+        System.out.println("targetDir: " + targetDir[0] + ", " + targetDir[1]);
+        targetDir = brain.computeMotionL4O(0,0, 0);
+        System.out.println("targetDir: " + targetDir[0] + ", " + targetDir[1]);
+        targetDir = brain.computeMotionL4O(24,12, 0);
+        System.out.println("targetDir: " + targetDir[0] + ", " + targetDir[1]);
+        
     }
     
     public void update(float tpf){
-        
+        /*castRays(rootNode);
+        targetDir = brain.computeMotion(dist2, dist1, dist3);
+        Vector3f forward = geom.getLocalRotation().getRotationColumn(0);
+        System.out.println("targetDir: " + targetDir[0] + ", " + targetDir[1]);
+        geom.move(forward.mult(tpf).mult((targetDir[0])+(targetDir[1])).mult(100));*/
     }
     
     
     
     public Vector3f getLocation(){
-        return geom.getLocalTranslation();
+        return geom.getWorldTranslation();
     }
     
     public void castRays(Node rootNode){
         
         
-        Ray ray1 = new Ray(this.getLocation().clone(), geom.getLocalRotation().clone().mult(new Vector3f(1,0,0)));
+        Ray ray1 = new Ray(this.getLocation().clone(), geom.getLocalRotation().getRotationColumn(0));
         //Ray ray2 = new Ray(this.getLocation().clone(), geom.getLocalRotation().clone().addLocal(new Quaternion().fromAngles(100.5f, 0, 0)).mult(new Vector3f(1,0,0)));
         //Ray ray3 = new Ray(this.getLocation().clone(), geom.getLocalRotation().clone().addLocal(new Quaternion().fromAngles(-100.5f, 0, 0)).mult(new Vector3f(1,0,0)));
         Ray ray2 = new Ray(this.getLocation().clone(), ray1.direction.clone().add(0, 0, 1));
         Ray ray3 = new Ray(this.getLocation().clone(), ray1.direction.clone().add(0,0,-1));
         
         
-        
+        /*
         Line line1 = new Line(ray1.origin, ray1.origin.add(ray1.direction.mult(1000)));
         Geometry we1 = new Geometry("ray1", line1);
         we1.setMaterial(mat);
-        //rootNode.attachChild(we1);
+        rootNode.attachChild(we1);
         
         Line line2 = new Line(ray2.origin, ray2.origin.add(ray2.direction.mult(1000)));
         Geometry we2 = new Geometry("ray2", line2);
         we2.setMaterial(mat);
-        //rootNode.attachChild(we2);
+        rootNode.attachChild(we2);
         
         Line line3 = new Line(ray3.origin, ray3.origin.add(ray3.direction.mult(1000)));
         Geometry we3 = new Geometry("ray3", line3);
         we3.setMaterial(mat);
-        //rootNode.attachChild(we3);
-        
+        rootNode.attachChild(we3);
+        */
         
         CollisionResults results1 = new CollisionResults();
         CollisionResults results2 = new CollisionResults();
