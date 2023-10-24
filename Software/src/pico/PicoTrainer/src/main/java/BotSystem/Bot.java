@@ -32,12 +32,13 @@ public class Bot {
     
     public Bot(Node rootNode, AssetManager assetManager){
         Box box = new Box(2*scale,1*scale,1*scale);
-        geom = new Geometry("Box", box);
+        geom = new Geometry("Bot", box);
         mat = new Material(assetManager, "Common/MatDefs/Misc/Unshaded.j3md");
         mat.setColor("Color", ColorRGBA.Red);
         //geom.setLocalTranslation((pos[0]*2f*scale)-1000,5,(pos[1]*2f*scale)-1000);
         geom.setMaterial(mat);
         geom.getLocalRotation();
+        geom.setLocalTranslation(-150*8, 0, 4);
         rootNode.attachChild(geom);
         castRays(rootNode);
     }
@@ -58,20 +59,20 @@ public class Bot {
         
         
         
-        Line line1 = new Line(ray1.origin, ray1.origin.add(ray1.direction.mult(100)));
+        Line line1 = new Line(ray1.origin, ray1.origin.add(ray1.direction.mult(1000)));
         Geometry we1 = new Geometry("ray1", line1);
         we1.setMaterial(mat);
-        rootNode.attachChild(we1);
+        //rootNode.attachChild(we1);
         
-        Line line2 = new Line(ray2.origin, ray2.origin.add(ray2.direction.mult(100)));
+        Line line2 = new Line(ray2.origin, ray2.origin.add(ray2.direction.mult(1000)));
         Geometry we2 = new Geometry("ray2", line2);
         we2.setMaterial(mat);
-        rootNode.attachChild(we2);
+        //rootNode.attachChild(we2);
         
-        Line line3 = new Line(ray3.origin, ray3.origin.add(ray3.direction.mult(100)));
+        Line line3 = new Line(ray3.origin, ray3.origin.add(ray3.direction.mult(1000)));
         Geometry we3 = new Geometry("ray3", line3);
         we3.setMaterial(mat);
-        rootNode.attachChild(we3);
+        //rootNode.attachChild(we3);
         
         
         CollisionResults results1 = new CollisionResults();
@@ -84,17 +85,19 @@ public class Bot {
         
         
         if(results1 != null){
-            dist1 = results1.getClosestCollision().getDistance();
+            dist1 = results1.getCollision(2).getDistance();
+            //results1.getCollision(2).getGeometry().setMaterial(mat);
+            //System.out.println(results1.getCollision(2).getGeometry().getName());
         }
         if(results2 != null){
-            dist2 = results2.getClosestCollision().getDistance();
+            dist2 = results2.getCollision(1).getDistance();
+            //results2.getCollision(1).getGeometry().setMaterial(mat);
         }
         if(results3 != null){
-            dist3 = results3.getClosestCollision().getDistance();
+            dist3 = results3.getCollision(1).getDistance();
+            //results3.getCollision(1).getGeometry().setMaterial(mat);
         }
-        //
-        //dist2 = results2.getClosestCollision().getDistance();
-        //dist3 = results3.getClosestCollision().getDistance();
+        
         
     }
     
