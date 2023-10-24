@@ -28,6 +28,7 @@ public class Main extends SimpleApplication {
     public void simpleInitApp() {
         Brain brain = new Brain();
         brain.readParams();
+        brain.computeMotion(1, 1, 1);
         
         
         this.cam.setFrustumFar(100000);

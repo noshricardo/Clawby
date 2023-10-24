@@ -6,8 +6,10 @@ package BotSystem;
 
 import java.io.BufferedReader;
 import java.io.FileReader;
+import static java.lang.Math.exp;
 import org.ejml.data.FMatrixRMaj;
 import org.ejml.data.Matrix;
+import org.ejml.dense.row.CommonOps_FDRM;
 
 /**
  *
@@ -34,6 +36,55 @@ public class Brain {
        
    }
    
+   public float[] computeMotion(float distLeft, float distMiddle, float distRight){
+       float[] out = {0,0};
+       float a[][] = {{distLeft,distMiddle,distRight}};
+       float e = (float)exp(1.0);
+       FMatrixRMaj in = new FMatrixRMaj(a);
+       //System.out.println(in);
+       //System.out.println(layer1);
+       //System.out.println(layer1Bias);
+       FMatrixRMaj tmp = layer1Bias.createLike();
+       CommonOps_FDRM.mult(in, layer1, tmp);
+       CommonOps_FDRM.add(1.0f, layer1Bias,1.0f, tmp, tmp);
+       CommonOps_FDRM.scale(-1.0f, tmp);
+       CommonOps_FDRM.elementPower(e, tmp, tmp);
+       CommonOps_FDRM.add(tmp, 1.0f, tmp);
+       CommonOps_FDRM.divide(1.0f, tmp);
+       
+       FMatrixRMaj tmp2 = layer2Bias.createLike();
+       CommonOps_FDRM.mult(tmp, layer2, tmp2);
+       CommonOps_FDRM.add(1.0f, layer2Bias,1.0f, tmp2, tmp2);
+       CommonOps_FDRM.scale(-1.0f, tmp2);
+       CommonOps_FDRM.elementPower(e, tmp2, tmp2);
+       CommonOps_FDRM.add(tmp2, 1.0f, tmp2);
+       CommonOps_FDRM.divide(1.0f, tmp2);
+       
+       FMatrixRMaj tmp3 = layer3Bias.createLike();
+       CommonOps_FDRM.mult(tmp2, layer3, tmp3);
+       CommonOps_FDRM.add(1.0f, layer3Bias,1.0f, tmp3, tmp3);
+       CommonOps_FDRM.scale(-1.0f, tmp3);
+       CommonOps_FDRM.elementPower(e, tmp3, tmp3);
+       CommonOps_FDRM.add(tmp3, 1.0f, tmp3);
+       CommonOps_FDRM.divide(1.0f, tmp3);
+       
+       FMatrixRMaj tmp4 = layer4Bias.createLike();
+       System.out.println(tmp3);
+       System.out.println(layer4);
+       CommonOps_FDRM.mult(tmp3, layer4, tmp4);
+       CommonOps_FDRM.add(1.0f, layer4Bias,1.0f, tmp4, tmp4);
+       CommonOps_FDRM.scale(-1.0f, tmp4);
+       CommonOps_FDRM.elementPower(e, tmp4, tmp4);
+       CommonOps_FDRM.add(tmp4, 1.0f, tmp4);
+       CommonOps_FDRM.divide(1.0f, tmp4);
+       
+       out = tmp4.data;
+       
+       return out;
+   }
+   
+   
+   
    public void readParams(){
        String everything = "";
        try(BufferedReader br = new BufferedReader(new FileReader("../pico_inteligence/Weights/Weights.h"))) {
@@ -54,10 +105,10 @@ public class Brain {
        int y = (new Integer(everything.substring(0, everything.indexOf('>')))).intValue();
        everything = everything.substring(everything.indexOf('{')+1);
        everything.stripLeading();
-       layer1 = new FMatrixRMaj(x,y);
+       layer1 = new FMatrixRMaj(y,x);
        for (int i = 0; i < y; i ++){
            for(int j = 0; j < x; j++){
-               layer1.set(j ,i , (new Float(everything.substring(0, everything.indexOf(',')))).floatValue());
+               layer1.set(i ,j , (new Float(everything.substring(0, everything.indexOf(',')))).floatValue());
                everything.stripLeading();
            } 
        }
@@ -67,10 +118,10 @@ public class Brain {
        y = (new Integer(everything.substring(0, everything.indexOf('>')))).intValue();
        everything = everything.substring(everything.indexOf('{')+1);
        everything.stripLeading();
-       layer2 = new FMatrixRMaj(x,y);
+       layer2 = new FMatrixRMaj(y,x);
        for (int i = 0; i < y; i ++){
            for(int j = 0; j < x; j++){
-               layer2.set(j ,i , (new Float(everything.substring(0, everything.indexOf(',')))).floatValue());
+               layer2.set(i ,j , (new Float(everything.substring(0, everything.indexOf(',')))).floatValue());
                everything.stripLeading();
            } 
        }
@@ -80,10 +131,10 @@ public class Brain {
        y = (new Integer(everything.substring(0, everything.indexOf('>')))).intValue();
        everything = everything.substring(everything.indexOf('{')+1);
        everything.stripLeading();
-       layer3 = new FMatrixRMaj(x,y);
+       layer3 = new FMatrixRMaj(y,x);
        for (int i = 0; i < y; i ++){
            for(int j = 0; j < x; j++){
-               layer3.set(j ,i , (new Float(everything.substring(0, everything.indexOf(',')))).floatValue());
+               layer3.set(i ,j , (new Float(everything.substring(0, everything.indexOf(',')))).floatValue());
                everything.stripLeading();
            } 
        }
@@ -93,14 +144,14 @@ public class Brain {
        y = (new Integer(everything.substring(0, everything.indexOf('>')))).intValue();
        everything = everything.substring(everything.indexOf('{')+1);
        everything.stripLeading();
-       layer4 = new FMatrixRMaj(x,y);
+       layer4 = new FMatrixRMaj(y,x);
        for (int i = 0; i < y; i ++){
            for(int j = 0; j < x; j++){
-               layer4.set(j ,i , (new Float(everything.substring(0, everything.indexOf(',')))).floatValue());
+               layer4.set(i ,j , (new Float(everything.substring(0, everything.indexOf(',')))).floatValue());
                everything.stripLeading();
            } 
        }
-       try(BufferedReader br = new BufferedReader(new FileReader("../pico_inteligence/Weights/Weights.h"))) {
+       try(BufferedReader br = new BufferedReader(new FileReader("../pico_inteligence/Weights/neurons.h"))) {
            StringBuilder sb = new StringBuilder();
            String line = br.readLine();
            while (line != null) {
@@ -113,39 +164,40 @@ public class Brain {
            
        }
        everything = everything.substring(everything.indexOf('<')+1);
-       x = (new Integer(everything.substring(0, everything.indexOf(',')))).intValue();
+       x = (new Integer(everything.substring(0, everything.indexOf('>')))).intValue();
        everything = everything.substring(everything.indexOf('{')+1);
        everything.stripLeading();
-       layer1Bias = new FMatrixRMaj(x);
+       //System.out.println("layer1Bias lenght: " + x);
+       layer1Bias = new FMatrixRMaj(1,x);
        for(int j = 0; j < x; j++){
-           layer1Bias.set(j , (new Float(everything.substring(0, everything.indexOf(',')))).floatValue());
+           layer1Bias.set(0,j , (new Float(everything.substring(0, everything.indexOf(',')))).floatValue());
            everything.stripLeading();
        } 
        everything = everything.substring(everything.indexOf('<')+1);
-       x = (new Integer(everything.substring(0, everything.indexOf(',')))).intValue();
+       x = (new Integer(everything.substring(0, everything.indexOf('>')))).intValue();
        everything = everything.substring(everything.indexOf('{')+1);
        everything.stripLeading();
-       layer2Bias = new FMatrixRMaj(x);
+       layer2Bias = new FMatrixRMaj(1,x);
        for(int j = 0; j < x; j++){
-           layer2Bias.set(j , (new Float(everything.substring(0, everything.indexOf(',')))).floatValue());
+           layer2Bias.set(0,j , (new Float(everything.substring(0, everything.indexOf(',')))).floatValue());
            everything.stripLeading();
        } 
        everything = everything.substring(everything.indexOf('<')+1);
-       x = (new Integer(everything.substring(0, everything.indexOf(',')))).intValue();
+       x = (new Integer(everything.substring(0, everything.indexOf('>')))).intValue();
        everything = everything.substring(everything.indexOf('{')+1);
        everything.stripLeading();
-       layer3Bias = new FMatrixRMaj(x);
+       layer3Bias = new FMatrixRMaj(1,x);
        for(int j = 0; j < x; j++){
-           layer3Bias.set(j , (new Float(everything.substring(0, everything.indexOf(',')))).floatValue());
+           layer3Bias.set(0,j , (new Float(everything.substring(0, everything.indexOf(',')))).floatValue());
            everything.stripLeading();
        } 
        everything = everything.substring(everything.indexOf('<')+1);
-       x = (new Integer(everything.substring(0, everything.indexOf(',')))).intValue();
+       x = (new Integer(everything.substring(0, everything.indexOf('>')))).intValue();
        everything = everything.substring(everything.indexOf('{')+1);
        everything.stripLeading();
-       layer4Bias = new FMatrixRMaj(x);
+       layer4Bias = new FMatrixRMaj(1,x);
        for(int j = 0; j < x; j++){
-           layer4Bias.set(j, (new Float(everything.substring(0, everything.indexOf(',')))).floatValue());
+           layer4Bias.set(0,j, (new Float(everything.substring(0, everything.indexOf(',')))).floatValue());
            everything.stripLeading();
        } 
        
