@@ -10,12 +10,12 @@ com/nosh/PicoTrainer/MazeSystem/MazeStorage.java
  com.nosh.PicoTrainer.MazeSystem.MazeStorage
 BotSystem/Brain.java
  BotSystem.Brain
-com/nosh/PicoTrainer/MazeSystem/MazeTile.java
- com.nosh.PicoTrainer.MazeSystem.MazeTile
-com/nosh/PicoTrainer/MazeSystem/MazeGenerator.java
- com.nosh.PicoTrainer.MazeSystem.MazeGenerator
 BotSystem/Trainer.java
  BotSystem.Trainer
+com/nosh/PicoTrainer/MazeSystem/MazeGenerator.java
+ com.nosh.PicoTrainer.MazeSystem.MazeGenerator
+com/nosh/PicoTrainer/MazeSystem/MazeTile.java
+ com.nosh.PicoTrainer.MazeSystem.MazeTile
 com/nosh/PicoTrainer/MazeSystem/Entity.java
  com.nosh.PicoTrainer.MazeSystem.Entity
 com/nosh/PicoTrainer/Main.java
