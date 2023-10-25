@@ -59,11 +59,11 @@ public class Bot {
     }
     
     public void update(float tpf){
-        /*castRays(rootNode);
-        targetDir = brain.computeMotion(dist2, dist1, dist3);
+        castRays(rootNode);
+        targetDir = brain.computeMotionL4O(dist2, dist1, dist3);
         Vector3f forward = geom.getLocalRotation().getRotationColumn(0);
         System.out.println("targetDir: " + targetDir[0] + ", " + targetDir[1]);
-        geom.move(forward.mult(tpf).mult((targetDir[0])+(targetDir[1])).mult(100));*/
+        geom.move(forward.mult(tpf).mult((targetDir[0])+(targetDir[1])).mult(100));
     }
     
     

@@ -42,20 +42,20 @@ public class Brain {
        float e = (float)exp(1.0);
        System.out.println("e = " + e);
        FMatrixRMaj in = new FMatrixRMaj(a);
-       
+       System.out.println(layer4);
        FMatrixRMaj tmp = layer4Bias.createLike();
        CommonOps_FDRM.mult(in, layer4, tmp);
-       System.out.println(tmp);
+       //System.out.println(tmp);
        CommonOps_FDRM.add(1.0f, layer4Bias,1.0f, tmp, tmp);
-       System.out.println(tmp);
+       //System.out.println(tmp);
        CommonOps_FDRM.scale(-1.0f, tmp);
-       System.out.println(tmp);
+       //System.out.println(tmp);
        CommonOps_FDRM.elementPower(e, tmp, tmp);
-       System.out.println(tmp);
+       //System.out.println(tmp);
        CommonOps_FDRM.add(tmp, 1.0f);
-       System.out.println(tmp);
+       //System.out.println(tmp);
        CommonOps_FDRM.divide(1.0f, tmp);
-       System.out.println(tmp);
+       //System.out.println(tmp);
        
        out = tmp.data;
        
@@ -185,6 +185,9 @@ public class Brain {
        for (int i = 0; i < y; i ++){
            for(int j = 0; j < x; j++){
                layer1.set(i ,j , (new Float(everything.substring(0, everything.indexOf(',')))).floatValue());
+               if(i < y-1){
+                   everything = everything.substring(everything.indexOf(',')+1);
+               }
                everything.stripLeading();
            } 
        }
@@ -198,6 +201,9 @@ public class Brain {
        for (int i = 0; i < y; i ++){
            for(int j = 0; j < x; j++){
                layer2.set(i ,j , (new Float(everything.substring(0, everything.indexOf(',')))).floatValue());
+               if(i < y-1){
+                   everything = everything.substring(everything.indexOf(',')+1);
+               }
                everything.stripLeading();
            } 
        }
@@ -211,6 +217,9 @@ public class Brain {
        for (int i = 0; i < y; i ++){
            for(int j = 0; j < x; j++){
                layer3.set(i ,j , (new Float(everything.substring(0, everything.indexOf(',')))).floatValue());
+               if(i < y-1){
+                   everything = everything.substring(everything.indexOf(',')+1);
+               }
                everything.stripLeading();
            } 
        }
@@ -224,6 +233,9 @@ public class Brain {
        for (int i = 0; i < y; i ++){
            for(int j = 0; j < x; j++){
                layer4.set(i ,j , (new Float(everything.substring(0, everything.indexOf(',')))).floatValue());
+               if(i < y-1){
+                   everything = everything.substring(everything.indexOf(',')+1);
+               }
                everything.stripLeading();
            } 
        }
