@@ -24,7 +24,7 @@ public class Bot {
     
     Geometry geom;
     Material mat;
-    float scale = 4;
+    float scale = 2;
     float dist1 = 0;
     float dist2 = 0;
     float dist3 = 0;
@@ -60,10 +60,13 @@ public class Bot {
     
     public void update(float tpf){
         castRays(rootNode);
+        
         targetDir = brain.computeMotionL4O(dist2, dist1, dist3);
         Vector3f forward = geom.getLocalRotation().getRotationColumn(0);
         System.out.println("targetDir: " + targetDir[0] + ", " + targetDir[1]);
-        geom.move(forward.mult(tpf).mult((targetDir[0])+(targetDir[1])).mult(100));
+        geom.rotate(0, targetDir[0], 0);
+        geom.rotate(0, -targetDir[1], 0);
+        geom.move(forward.mult(tpf).mult(20));
     }
     
     
@@ -74,7 +77,7 @@ public class Bot {
     
     public void castRays(Node rootNode){
         
-        
+        dist1 = 0; dist2 = 0; dist3 = 0;
         Ray ray1 = new Ray(this.getLocation().clone(), geom.getLocalRotation().getRotationColumn(0));
         //Ray ray2 = new Ray(this.getLocation().clone(), geom.getLocalRotation().clone().addLocal(new Quaternion().fromAngles(100.5f, 0, 0)).mult(new Vector3f(1,0,0)));
         //Ray ray3 = new Ray(this.getLocation().clone(), geom.getLocalRotation().clone().addLocal(new Quaternion().fromAngles(-100.5f, 0, 0)).mult(new Vector3f(1,0,0)));
@@ -107,24 +110,26 @@ public class Bot {
         rootNode.collideWith(ray2, results2);
         rootNode.collideWith(ray3, results3);
         
-        
-        if(results1 != null){
-            dist1 = results1.getCollision(2).getDistance();
-            System.out.println("dist1: " + dist1);
-            //results1.getCollision(2).getGeometry().setMaterial(mat);
-            //System.out.println(results1.getCollision(2).getGeometry().getName());
+        try{
+            if(results1 != null){
+                dist1 = results1.getCollision(2).getDistance();
+                System.out.println("dist1: " + dist1);
+                //results1.getCollision(2).getGeometry().setMaterial(mat);
+                //System.out.println(results1.getCollision(2).getGeometry().getName());
+            }
+            if(results2 != null){
+                dist2 = results2.getCollision(1).getDistance();
+                System.out.println("dist2: " + dist2);
+                //results2.getCollision(1).getGeometry().setMaterial(mat);
+            }
+            if(results3 != null){
+                dist3 = results3.getCollision(1).getDistance();
+                System.out.println("dist3: " + dist3);
+                //results3.getCollision(1).getGeometry().setMaterial(mat);
+            }
+        }catch(Exception e){
+            
         }
-        if(results2 != null){
-            dist2 = results2.getCollision(1).getDistance();
-            System.out.println("dist2: " + dist2);
-            //results2.getCollision(1).getGeometry().setMaterial(mat);
-        }
-        if(results3 != null){
-            dist3 = results3.getCollision(1).getDistance();
-            System.out.println("dist3: " + dist3);
-            //results3.getCollision(1).getGeometry().setMaterial(mat);
-        }
-        
         
     }
     
