@@ -31,6 +31,7 @@ public class Bot {
     Node rootNode;
     Brain brain;
     float[] targetDir = {0,0,0};
+    boolean shouldDie = false;
     
     
     public Bot(Node rootNode, AssetManager assetManager){
@@ -59,14 +60,36 @@ public class Bot {
     }
     
     public void update(float tpf){
-        castRays(rootNode);
         
-        targetDir = brain.computeMotion(dist2, dist1, dist3);
-        Vector3f forward = geom.getLocalRotation().getRotationColumn(0);
-        System.out.println("targetDir: " + targetDir[0] + ", " + targetDir[1]);
-        geom.rotate(0, targetDir[0], 0);
-        geom.rotate(0, -targetDir[1], 0);
-        geom.move(forward.mult(tpf).mult(20));
+        if(!shouldDie){
+            checkCollide();
+            castRays(rootNode);
+            targetDir = brain.computeMotion(dist2, dist1, dist3);
+            //System.out.println("targetDir: " + targetDir[0] + ", " + targetDir[1] + ", " + targetDir[2]);
+            geom.rotate(0, targetDir[0], 0);
+            geom.rotate(0, -targetDir[1], 0);
+            Vector3f forward = geom.getLocalRotation().getRotationColumn(0);
+            geom.move(forward.mult(tpf).mult(20).mult(targetDir[2]));
+        }
+    }
+    
+    public void checkCollide(){
+        CollisionResults results = new CollisionResults();
+        //geom.collideWith(rootNode, results);
+        //geom.getWorldBound().collideWith(rootNode, results);
+        rootNode.collideWith(geom.getWorldBound(), results);
+        if(results != null){
+            for(int i = 0; i < results.size(); i++){
+                //System.out.println("Collided with: " + results.getCollision(i).getGeometry().getName());
+                if(results.getCollision(i).getGeometry().getName().equals("Box")){
+                    shouldDie = true;
+                }
+            }
+        }
+        if(shouldDie){
+            System.out.println("Died");
+            rootNode.detachChild(geom);
+        }
     }
     
     
@@ -113,18 +136,18 @@ public class Bot {
         try{
             if(results1 != null){
                 dist1 = results1.getCollision(2).getDistance();
-                System.out.println("dist1: " + dist1);
+                //System.out.println("dist1: " + dist1);
                 //results1.getCollision(2).getGeometry().setMaterial(mat);
                 //System.out.println(results1.getCollision(2).getGeometry().getName());
             }
             if(results2 != null){
                 dist2 = results2.getCollision(1).getDistance();
-                System.out.println("dist2: " + dist2);
+                //System.out.println("dist2: " + dist2);
                 //results2.getCollision(1).getGeometry().setMaterial(mat);
             }
             if(results3 != null){
                 dist3 = results3.getCollision(1).getDistance();
-                System.out.println("dist3: " + dist3);
+                //System.out.println("dist3: " + dist3);
                 //results3.getCollision(1).getGeometry().setMaterial(mat);
             }
         }catch(Exception e){

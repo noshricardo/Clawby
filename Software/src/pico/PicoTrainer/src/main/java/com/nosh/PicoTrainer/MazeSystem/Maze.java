@@ -18,7 +18,7 @@ public class Maze {
 		for(int i = 0; i < mazeStorage.getMaze(0).length; i++){
                     for(int j = 0; j < mazeStorage.getMaze(0)[0].length; j++){
                         if(mazeStorage.getMaze(0)[i][j] == 1){
-                            maze.add(new MazeTile(i,j,0,0,"E" + i + ":" + j, 0, 0));
+                            maze.add(new MazeTile(i,j,0,0,"Wall", 0, 0));
                         }
                     }
                 }

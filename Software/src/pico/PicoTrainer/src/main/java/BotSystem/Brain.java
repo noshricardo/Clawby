@@ -68,7 +68,7 @@ public class Brain {
        float[] out = {0,0};
        float a[][] = {{distLeft,distMiddle,distRight}};
        float e = (float)exp(1.0);
-       System.out.println("e = " + e);
+       //System.out.println("e = " + e);
        FMatrixRMaj in = new FMatrixRMaj(a);
        /*
        CommonOps_FDRM.scale(-1.0f, in);
