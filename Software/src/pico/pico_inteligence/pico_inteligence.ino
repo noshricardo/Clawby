@@ -68,7 +68,7 @@ void loop(){
   for(int i = 0; i < x; i++){
     tmp1(i) = (1/(1 + exp(-(tmp1(i)))));
   }
-  BLA::Matrix<3> tmp2 = (layer3 * (tmp1)) + layer3Bias;
+  BLA::Matrix<16> tmp2 = (layer3 * (tmp1)) + layer3Bias;
   x = 3;
   for(int i = 0; i < x; i++){
     tmp2(i) = (1/(1 + exp(-(tmp2(i)))));
@@ -79,7 +79,8 @@ void loop(){
     tmp3(i) = (1/(1 + exp(-(tmp3(i)))));
   }
   output = tmp3;
-
+  //chanegeing output style to turn left/right and speed
+  //TODO change arduino code to reflect this
   if(output(1) < 0.5){
     digitalWrite(m1f, LOW);
     analogWrite(m1b, abs(output(1)*255));

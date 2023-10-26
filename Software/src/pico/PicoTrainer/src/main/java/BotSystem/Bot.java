@@ -30,7 +30,7 @@ public class Bot {
     float dist3 = 0;
     Node rootNode;
     Brain brain;
-    float[] targetDir = {0,0};
+    float[] targetDir = {0,0,0};
     
     
     public Bot(Node rootNode, AssetManager assetManager){
@@ -47,21 +47,21 @@ public class Bot {
         
         brain = new Brain();
         brain.readParams();
-        //brain.setRandomParams();
+        brain.setRandomParams();
         
-        targetDir = brain.computeMotionL4O(12,10, 5);
+        /*targetDir = brain.computeMotionL4O(12,10, 5);
         System.out.println("targetDir: " + targetDir[0] + ", " + targetDir[1]);
         targetDir = brain.computeMotionL4O(0,0, 0);
         System.out.println("targetDir: " + targetDir[0] + ", " + targetDir[1]);
         targetDir = brain.computeMotionL4O(24,12, 0);
-        System.out.println("targetDir: " + targetDir[0] + ", " + targetDir[1]);
+        System.out.println("targetDir: " + targetDir[0] + ", " + targetDir[1]);*/
         
     }
     
     public void update(float tpf){
         castRays(rootNode);
         
-        targetDir = brain.computeMotionL4O(dist2, dist1, dist3);
+        targetDir = brain.computeMotion(dist2, dist1, dist3);
         Vector3f forward = geom.getLocalRotation().getRotationColumn(0);
         System.out.println("targetDir: " + targetDir[0] + ", " + targetDir[1]);
         geom.rotate(0, targetDir[0], 0);
