@@ -1,6 +1,7 @@
 package com.nosh.PicoTrainer;
 
 import BotSystem.Bot;
+import BotSystem.BotController;
 import BotSystem.Brain;
 import com.jme3.app.SimpleApplication;
 import com.jme3.material.Material;
@@ -19,10 +20,7 @@ import com.nosh.PicoTrainer.MazeSystem.MazeStorage;
  */
 public class Main extends SimpleApplication {
 
-    Bot[] bots;
-    
-    
-    Bot bot;
+    BotController botController;
     
     
     
@@ -42,19 +40,14 @@ public class Main extends SimpleApplication {
         Maze maze = new Maze(MazeGenerator.genRandomMaze(new MazeStorage(), 100, 100));
         maze.drawMaze(assetManager, rootNode);
         //bot = new Bot(rootNode, assetManager);
-        bots = new Bot[12];
-        for(int i = 0; i < bots.length; i++){
-            bots[i] = new Bot(rootNode, assetManager);
-        }
+        botController = new BotController(120, rootNode, assetManager);
         flyCam.setMoveSpeed(100);
     }
 
     @Override
     public void simpleUpdate(float tpf) {
         //bot.update(tpf);
-        for(int i = 0; i < bots.length; i++){
-            bots[i].update(tpf);
-        }
+        botController.update(tpf);
         //TODO: add update code
     }
 

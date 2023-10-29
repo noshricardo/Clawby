@@ -32,6 +32,7 @@ public class Brain {
     FMatrixRMaj layer3Bias;
     FMatrixRMaj layer4Bias;
     
+    
    public Brain(){
        
    }

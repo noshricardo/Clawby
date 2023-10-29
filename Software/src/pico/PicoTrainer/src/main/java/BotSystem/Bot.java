@@ -32,6 +32,7 @@ public class Bot {
     Brain brain;
     float[] targetDir = {0,0,0};
     boolean shouldDie = false;
+    float tpf;
     
     
     public Bot(Node rootNode, AssetManager assetManager){
@@ -59,7 +60,12 @@ public class Bot {
         
     }
     
-    public void update(float tpf){
+    public void setTpf(float tpf){
+        this.tpf = tpf;
+    }
+    
+    
+    public void update(){
         
         if(!shouldDie){
             checkCollide();
